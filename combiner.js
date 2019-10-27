@@ -131,13 +131,8 @@ while ((members = cmb.next())) {
   }
 
   process.stdout.write(
-    `Currently at combination ${count}/${cmb.length}. Max score is ${highestScore}.\r`
+    `Currently at combination ${count}/${cmb.length} (${Math.floor(
+      (count / cmb.length) * 100
+    )}%). Max score is ${highestScore}.\r`
   );
-
-  // process.stdout.write(
-  //   `Currently at combination ${count}. Max score is ${highestScore}.\r`
-  // );
-  // if (count % 100000 === 0) {
-
-  // }
 }
