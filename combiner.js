@@ -5,6 +5,7 @@ console.log(`${heroes.length} heroes`);
 console.log(`Retrieving all hero combinations`);
 
 let count = 0;
+let highestScore = 0;
 const cmb = combinatorics.bigCombination(heroes, 4);
 
 /**
@@ -37,6 +38,8 @@ const getSpeakerOptionCombos = members => {
  *  ...]
  */
 const getValidPairs = combos => {
+  //not enough speaking combos for two dialogs
+  if (combos.length < 2) return [];
   const pairCmb = combinatorics.bigCombination(combos, 2);
   const validPairs = [];
   let invalidCount = 0;
@@ -105,6 +108,8 @@ const getMaxScore = (validPairs, members) => {
   return maxScore;
 };
 
+let team;
+
 while ((members = cmb.next())) {
   count++;
 
@@ -115,9 +120,24 @@ while ((members = cmb.next())) {
   const validPairs = getValidPairs(combos);
 
   // get max score based on valid pairs relative to members of the group
-  const maxScore = getMaxScore(validPairs, members);
+  const score = getMaxScore(validPairs, members);
+
+  if (score && score >= highestScore) {
+    highestScore = score;
+
+    team = members.map(member => member.name);
+
+    console.log(`Max score became ${highestScore}. Team is ${team.toString()}`);
+  }
 
   process.stdout.write(
-    `Currently at combination ${count}. Max score is ${maxScore}.\r`
+    `Currently at combination ${count}/${cmb.length}. Max score is ${highestScore}.\r`
   );
+
+  // process.stdout.write(
+  //   `Currently at combination ${count}. Max score is ${highestScore}.\r`
+  // );
+  // if (count % 100000 === 0) {
+
+  // }
 }
