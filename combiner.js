@@ -1,5 +1,7 @@
 const heroes = require("./heroes.json");
 const combinatorics = require("js-combinatorics");
+const fs = require("fs");
+var stream = fs.createWriteStream("memoize.txt", { flags: "as" });
 
 console.log(`${heroes.length} heroes`);
 console.log(`Retrieving all hero combinations`);
@@ -120,6 +122,12 @@ while ((members = cmb.next())) {
   const { maxScore, maxPair } = getMaxScore(validPairs, members);
 
   // output to filesystem
+  const toWrite = { members, maxScore, maxPair };
+  stream.write(JSON.stringify(toWrite) + "\n");
+
+  // if (count % 1000000 === 0) {
+  //   console.log(`at ${count}`);
+  // }
 
   if (maxScore && maxScore >= highestScore) {
     highestScore = maxScore;
@@ -135,3 +143,5 @@ while ((members = cmb.next())) {
     );
   }
 }
+
+stream.end();
