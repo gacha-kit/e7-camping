@@ -49,11 +49,8 @@ const getValidPairs = combos => {
     const first = pair[0];
     const second = pair[1];
 
-    // neither same option nor same speaker can go twice
-    if (
-      first.option !== second.option ||
-      first.member._id !== first.member._id
-    ) {
+    // same option cannot go twice
+    if (first.option !== second.option) {
       validPairs.push(pair);
     } else {
       invalidCount++;
@@ -91,6 +88,7 @@ const getScoreForPair = (validPair, members) => {
 
 const getMaxScore = (validPairs, members) => {
   let maxScore = null;
+  let maxPair = null;
 
   for (let i = 0; i < validPairs.length; i++) {
     const validPair = validPairs[i];
@@ -98,14 +96,13 @@ const getMaxScore = (validPairs, members) => {
     // pair is a pair of speaker and options
     const score = getScoreForPair(validPair, members);
 
-    if (!maxScore) {
+    if (!maxScore || score > maxScore) {
       maxScore = score;
-    } else if (score > maxScore) {
-      maxScore = score;
+      maxPair = validPair;
     }
   }
 
-  return maxScore;
+  return { maxScore, maxPair };
 };
 
 let team;
@@ -120,19 +117,25 @@ while ((members = cmb.next())) {
   const validPairs = getValidPairs(combos);
 
   // get max score based on valid pairs relative to members of the group
-  const score = getMaxScore(validPairs, members);
+  const { maxScore, maxPair } = getMaxScore(validPairs, members);
 
-  if (score && score >= highestScore) {
-    highestScore = score;
+  if (maxScore && maxScore >= highestScore) {
+    highestScore = maxScore;
 
     team = members.map(member => member.name);
 
-    console.log(`Max score became ${highestScore}. Team is ${team.toString()}`);
+    scoreInfo = maxPair.map(
+      single => `${single.member.name}: ${single.option}`
+    );
+
+    console.log(
+      `Max score became ${highestScore}. Team is ${team.toString()}. ${scoreInfo}.`
+    );
   }
 
-  process.stdout.write(
-    `Currently at combination ${count}/${cmb.length} (${Math.floor(
-      (count / cmb.length) * 100
-    )}%). Max score is ${highestScore}.\r`
-  );
+  // process.stdout.write(
+  //   `Currently at combination ${count}/${cmb.length} (${Math.floor(
+  //     (count / cmb.length) * 100
+  //   )}%). Max score is ${highestScore}.\r`
+  // );
 }
