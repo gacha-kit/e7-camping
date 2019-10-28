@@ -119,6 +119,8 @@ while ((members = cmb.next())) {
   // get max score based on valid pairs relative to members of the group
   const { maxScore, maxPair } = getMaxScore(validPairs, members);
 
+  // output to filesystem
+
   if (maxScore && maxScore >= highestScore) {
     highestScore = maxScore;
 
@@ -132,10 +134,4 @@ while ((members = cmb.next())) {
       `Max score became ${highestScore}. Team is ${team.toString()}. ${scoreInfo}.`
     );
   }
-
-  // process.stdout.write(
-  //   `Currently at combination ${count}/${cmb.length} (${Math.floor(
-  //     (count / cmb.length) * 100
-  //   )}%). Max score is ${highestScore}.\r`
-  // );
 }
