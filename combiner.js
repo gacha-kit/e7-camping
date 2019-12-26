@@ -120,7 +120,6 @@ while ((members = cmb.next())) {
   // get max score based on valid pairs relative to members of the group
   const { maxScore, maxPair } = getMaxScore(validPairs, members);
 
-<<<<<<< HEAD
   // output this combo to a file anyway, where we can sort it
   const result = {
     member1: members[0].name,
@@ -138,15 +137,6 @@ while ((members = cmb.next())) {
     "results.csv",
     `${result.member1},${result.member2},${result.member3},${result.member4},${result.option1member},${result.option1option},${result.option2member},${result.option2option},${result.score}\n`
   );
-=======
-  // output to filesystem
-  const toWrite = { members, maxScore, maxPair };
-  stream.write(JSON.stringify(toWrite) + "\n");
-
-  // if (count % 1000000 === 0) {
-  //   console.log(`at ${count}`);
-  // }
->>>>>>> d6d3a516d5206358fbca65144b4d349ce859f42a
 
   if (maxScore && maxScore >= highestScore) {
     highestScore = maxScore;
