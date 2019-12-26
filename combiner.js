@@ -9,6 +9,11 @@ let count = 0;
 let highestScore = 0;
 const cmb = combinatorics.bigCombination(heroes, 4);
 
+fs.appendFileSync(
+  "results.csv",
+  "member1,member2,member3,member4,member_option_1,option_1,member_option_2,option_2,score\n"
+);
+
 /**
  * Get every combination of speaker to option
  * @param {*} members
