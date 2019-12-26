@@ -1,5 +1,6 @@
 const heroes = require("./heroes.json");
 const combinatorics = require("js-combinatorics");
+const fs = require("fs");
 
 console.log(`${heroes.length} heroes`);
 console.log(`Retrieving all hero combinations`);
@@ -118,6 +119,24 @@ while ((members = cmb.next())) {
 
   // get max score based on valid pairs relative to members of the group
   const { maxScore, maxPair } = getMaxScore(validPairs, members);
+
+  // output this combo to a file anyway, where we can sort it
+  const result = {
+    member1: members[0].name,
+    member2: members[1].name,
+    member3: members[2].name,
+    member4: members[3].name,
+    option1member: maxPair[0].member.name,
+    option1option: maxPair[0].option,
+    option2member: maxPair[1].member.name,
+    option2option: maxPair[1].option,
+    score: maxScore
+  };
+
+  fs.appendFileSync(
+    "results.csv",
+    `${result.member1},${result.member2},${result.member3},${result.member4},${result.option1member},${result.option1option},${result.option2member},${result.option2option},${result.score}\n`
+  );
 
   if (maxScore && maxScore >= highestScore) {
     highestScore = maxScore;
