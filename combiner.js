@@ -1,10 +1,6 @@
 const heroes = require("./heroes.json");
 const combinatorics = require("js-combinatorics");
 const fs = require("fs");
-<<<<<<< HEAD
-=======
-var stream = fs.createWriteStream("memoize.txt", { flags: "as" });
->>>>>>> d6d3a516d5206358fbca65144b4d349ce859f42a
 
 console.log(`${heroes.length} heroes`);
 console.log(`Retrieving all hero combinations`);
